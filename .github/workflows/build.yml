@@ -1,26 +1,23 @@
 name: ci
 
-on: push
+on:
+  push:
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-        with:
-          fetch-depth: 0
-      - name: Version
-        id: auto-version
-        uses: paulhatch/semantic-version@v4.0.1
-        with:
-          change_path: "main"
-          tag_prefix: "v"
-          minor_pattern: "(MINOR)"
-          major_pattern: "(MAJOR)"
-          format: "${major}.${minor}.${patch}"
-          bump_each_commit: true
-      - name: publish
+      - name: Testing
+        if: ${{ github.event == 'pull_request' }}
+        run: echo This is pull request
+      - name: Publish
+        if: ${{ github.event == 'push' }}
         run: |
-          echo ${{ steps.auto-version.outputs.version }}
-          echo ${{ steps.auto-version.outputs.changed }}
-          echo ${{ steps.auto-version.outputs.increment }}
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          echo $VERSION
