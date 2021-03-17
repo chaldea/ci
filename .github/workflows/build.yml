@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+        with:
+          fetch-depth: 0
       - name: Version
         id: auto-version
         uses: paulhatch/semantic-version@v4.0.1
