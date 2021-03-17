@@ -13,11 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: Info
+        run: echo ${{ github.event_name }}
       - name: Testing
-        if: ${{ github.event == 'pull_request' }}
+        if: ${{ github.event_name == 'pull_request' }}
         run: echo This is pull request
       - name: Publish
-        if: ${{ github.event == 'push' }}
+        if: ${{ github.event_name == 'push' }}
         run: |
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
           echo $VERSION
