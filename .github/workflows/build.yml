@@ -14,7 +14,10 @@ jobs:
         uses: paulhatch/semantic-version@v4.0.1
         with:
           change_path: "main"
-          format: "${major}.${minor}.${patch}-prerelease${increment}"
+          tag_prefix: "v"
+          minor_pattern: "(MINOR)"
+          major_pattern: "(MAJOR)"
+          format: "${major}.${minor}.${patch}"
           bump_each_commit: true
       - name: publish
         run: |
