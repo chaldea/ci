@@ -16,3 +16,5 @@ jobs:
       - name: publish
         run: |
           echo ${{ steps.auto-version.outputs.version }}
+          echo ${{ steps.auto-version.outputs.changed }}
+          echo ${{ steps.auto-version.outputs.increment }}
