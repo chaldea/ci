@@ -12,6 +12,7 @@ jobs:
         uses: paulhatch/semantic-version@v4.0.1
         with:
           change_path: "main"
+          bump_each_commit: true
       - name: publish
         run: |
           echo ${{ steps.auto-version.outputs.version }}
