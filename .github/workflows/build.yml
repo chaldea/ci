@@ -8,13 +8,10 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Version
+        id: auto-version
         uses: paulhatch/semantic-version@v4.0.1
         with:
-          change_path: "modules/module1"
+          change_path: "main"
       - name: publish
         run: |
-          echo $major
-          echo $minor
-          echo $patch
-          echo $increment
-          echo $version
+          echo ${{ steps.auto-version.outputs.version }}
