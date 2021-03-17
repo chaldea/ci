@@ -13,8 +13,8 @@ jobs:
           change_path: "modules/module1"
       - name: publish
         run: |
-          echo $(major)
-          echo $(minor)
-          echo $(patch)
-          echo $(increment)
-          echo $(version)
+          echo $major
+          echo $minor
+          echo $patch
+          echo $increment
+          echo $version
