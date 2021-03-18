@@ -44,7 +44,7 @@ jobs:
           fi
       - name: Docker Push
         run: |
-          echo Docker build, tag: $IMAGE_NAME:v$VERSION-${github.run_number}
+          echo "Docker build, $IMAGE_NAME:v$VERSION-$GITHUB_RUN_NUMBER"
 
   package:
     if: ${{ github.event_name == 'push' && github.ref != 'refs/heads/release' }}
