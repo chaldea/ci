@@ -21,6 +21,7 @@ env:
   SOLUTION_PATH: ./modules/account
   CHART_PATH: ./charts/account
   VERSION: 0.1.0
+  SOURCE_NAME: ${GITHUB_REF#refs/*/}
 
 jobs:
   testing:
@@ -47,13 +48,21 @@ jobs:
           echo Docker build, tag: $IMAGE_NAME:v$VERSION-${github.run_number}
 
   package:
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push' && github.ref != 'refs/heads/release' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Initialize
         run: |
-          echo $GITHUB_REF
+          TAG_VERSION=$(git describe --tags --abbrev=0 --match=v*[0-9.])
+          if [ $? -eq 0 ]; then
+            VERSION=${TAG_VERSION:1}
+          fi
+      - name: Docker Build
+        run: |
+          echo Docker build, tag: $IMAGE_NAME:v$VERSION-${github.run_number}
+      - name: Helm package
+          echo Helm package
 
 # on:
 #   push:
