@@ -2,8 +2,10 @@ name: ci
 
 on:
   push:
-    branches:
-      - release
+    # branches:
+    #   - release
+    # tags:
+    #   - "v*"
     paths:
       - "modules/account/**"
       - "charts/account/**"
@@ -38,6 +40,7 @@ jobs:
         run: |
           echo DefaultVer: $VERSION
           echo GithubRef: ${GITHUB_REF#refs/*/}
+          echo GitRef ${{ github.ref }}
       - name: Docker Build
         run: echo Docker build
 
