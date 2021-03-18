@@ -36,8 +36,8 @@ jobs:
       - uses: actions/checkout@v1
       - name: Version
         run: |
-          echo ${{ github.ref }}
-          echo $VERSION
+          echo DefaultVer: $VERSION
+          echo GithubRef: ${GITHUB_REF#refs/*/}
       - name: Docker Build
         run: echo Docker build
 
