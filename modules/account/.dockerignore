@@ -1,0 +1,7 @@
+.vs
+.dockerignore
+.gitattributes
+.gitignore
+.prettierrc
+Dockerfile
+/test

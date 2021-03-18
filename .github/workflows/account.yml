@@ -1,0 +1,92 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - release
+    paths:
+      - "modules/account/**"
+      - "charts/account/**"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "modules/account/**"
+      - "charts/account/**"
+
+env:
+  IMAGE_NAME: chaldea/fate-ci-demo
+  SOLUTION_PATH: ./modules/account
+  CHART_PATH: ./charts/account
+  VERSION: 0.1.0
+
+jobs:
+  testing:
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Docker Build
+        run: echo Docker build testing
+
+  deployment:
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Version
+        run: |
+          echo ${{ github.ref }}
+          echo $VERSION
+      - name: Docker Build
+        run: echo Docker build
+
+
+# on:
+#   push:
+#     tags:
+#       - v*
+#   pull_request:
+#     branches:
+#       - main
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Output Run ID
+#         run: echo ${{ github.run_id }}
+#       - name: Output Run Number
+#         run: echo ${{ github.run_number }}
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Generate build number
+#       id: buildnumber
+#       uses: einaregilsson/build-number@v3
+#       with:
+#         token: ${{secrets.github_token}}
+
+#     # Now you can pass ${{ steps.buildnumber.outputs.build_number }} to the next steps.
+#     - name: Another step as an example
+#       uses: actions/hello-world-docker-action@v1
+#       with:
+#         who-to-greet: ${{ steps.buildnumber.outputs.build_number }}
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v1
+#       - name: Info
+#         run: echo ${{ github.event_name }}
+#       - name: Testing
+#         if: ${{ github.event_name == 'pull_request' }}
+#         run: echo This is pull request
+#       - name: Publish
+#         if: ${{ github.event_name == 'push' }}
+#         run: |
+#           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+#           echo $VERSION

@@ -1,7 +1,4 @@
 # CI testing
 
-## Change logs
-* change1
-* change2
-* change3
-* change4
+## 简介
+该项目用于测试CI逻辑，无他用
