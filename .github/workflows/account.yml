@@ -29,38 +29,30 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Docker Build
-        run: echo Docker build testing
+        run: echo Docker build
 
   deployment:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/release' }}
     runs-on: ubuntu-latest
+    needs: testing
     steps:
-      - uses: actions/checkout@v1
-      - name: Initialize
+      - name: Tag Version
         run: |
           TAG_VERSION=$(git describe --tags --abbrev=0 --match=v*[0-9.])
           if [ $? -eq 0 ]; then
             VERSION=${TAG_VERSION:1}
           fi
-      - name: Docker Build
+      - name: Docker Push
         run: |
           echo Docker build, tag: $IMAGE_NAME:v$VERSION-${github.run_number}
 
   package:
     if: ${{ github.event_name == 'push' && github.ref != 'refs/heads/release' }}
     runs-on: ubuntu-latest
+    needs: [testing, deployment]
     steps:
-      - uses: actions/checkout@v1
-      - name: Initialize
-        run: |
-          TAG_VERSION=$(git describe --tags --abbrev=0 --match=v*[0-9.])
-          if [ $? -eq 0 ]; then
-            VERSION=${TAG_VERSION:1}
-          fi
-      - name: Docker Build
-        run: |
-          echo Docker build, tag: $IMAGE_NAME:v$VERSION-${github.run_number}
       - name: Helm package
+        run: |  
           echo Helm package
 
 # on:
