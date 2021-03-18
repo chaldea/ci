@@ -21,7 +21,6 @@ env:
   SOLUTION_PATH: ./modules/account
   CHART_PATH: ./charts/account
   VERSION: 0.1.0
-  SOURCE_NAME: ${GITHUB_REF#refs/*/}
 
 jobs:
   testing:
