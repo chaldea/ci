@@ -16,7 +16,7 @@ namespace Chaldea.Ci.Hello.EntityFrameworkCore
             var configuration = BuildConfiguration();
 
             var builder = new DbContextOptionsBuilder<HelloMigrationsDbContext>()
-                .UseSqlServer(configuration.GetConnectionString("Default"));
+                .UseNpgsql(configuration.GetConnectionString("Default"));
 
             return new HelloMigrationsDbContext(builder.Options);
         }

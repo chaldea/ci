@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Chaldea.Ci.Hello.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

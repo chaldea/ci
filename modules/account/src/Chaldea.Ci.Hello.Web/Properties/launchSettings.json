@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "https://localhost:44339/",
-      "sslPort": 44339
+      "applicationUrl": "https://localhost:44366/",
+      "sslPort": 44366
     }
   },
   "profiles": {
@@ -19,9 +19,10 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionStrings__Default": "server=192.168.50.151;port=5432;user id=postgres;password=postgres;database=hello"
       },
-      "applicationUrl": "https://localhost:44339/"
+      "applicationUrl": "https://localhost:44366/"
     }
   }
 }
