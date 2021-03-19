@@ -28,7 +28,8 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Docker Build
-        run: echo Docker build
+        run: echo "Testing"
+        # run: docker build -f $SOLUTION_PATH/Dockerfile -t $IMAGE_NAME $SOLUTION_PATH
 
   deployment:
     if: ${{ github.event_name == 'push' }}
@@ -36,15 +37,24 @@ jobs:
     needs: testing
     steps:
       - uses: actions/checkout@v1
-      - name: Tag Version
+      - name: Get Version
+        id: get-version
         run: |
-          TAG_VERSION=$(git describe --tags --abbrev=0 --match=v*[0-9.])
+          TAG=$(git describe --tags --abbrev=0 --match=v*[0-9.])
           if [ $? -eq 0 ]; then
-            VERSION=${TAG_VERSION:1}
+            VERSION=${TAG:1}
           fi
-      - name: Docker Push
+          if [ "${{ github.ref }}" == "refs/heads/release" ]
+          then
+            echo '::set-output name=IMAGE_TAG::$IMAGE_NAME:$VERSION-$GITHUB_RUN_NUMBER'
+          else
+            echo '::set-output name=IMAGE_TAG::$IMAGE_NAME:$VERSION'
+          if
+          echo '::set-output name=VERSION::$VERSION'
+      - name: Docker Build
         run: |
-          echo "Docker build, $IMAGE_NAME:v$VERSION-$GITHUB_RUN_NUMBER"
+          echo "Tag: ${{ steps.get-version.outputs.VERSION }}"
+          echo "Tag: ${{ steps.get-version.outputs.IMAGE_TAG }}"
 
   package:
     if: ${{ github.event_name == 'push' && github.ref != 'refs/heads/release' }}
