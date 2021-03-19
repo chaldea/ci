@@ -49,7 +49,7 @@ jobs:
             echo '::set-output name=IMAGE_TAG::$IMAGE_NAME:$VERSION-$GITHUB_RUN_NUMBER'
           else
             echo '::set-output name=IMAGE_TAG::$IMAGE_NAME:$VERSION'
-          if
+          fi
           echo '::set-output name=VERSION::$VERSION'
       - name: Docker Build
         run: |
