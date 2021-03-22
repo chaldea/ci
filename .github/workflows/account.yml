@@ -45,7 +45,7 @@ jobs:
             VERSION=${TAG:1}
           fi
           if [ "${{ github.ref }}" == "refs/heads/release" ]; then
-            VERSION='$VERSION.$GITHUB_RUN_NUMBER'
+            VERSION=$VERSION.$GITHUB_RUN_NUMBER
           fi
           echo '::set-output name=IMAGE_TAG::$IMAGE_NAME:$VERSION'
           echo '::set-output name=IMAGE_VERSION::$VERSION'
@@ -53,7 +53,6 @@ jobs:
         run: |
           echo "Tag: ${{ steps.get-version.outputs.IMAGE_TAG }}"
           echo "Tag: ${{ steps.get-version.outputs.IMAGE_VERSION }}"
-          echo "Tag: ${{ steps.get-version.outputs.VERSION }}"
       - name: Docker Push
         run: echo docker push
       - name: Update Chart
