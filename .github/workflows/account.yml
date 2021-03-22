@@ -47,9 +47,8 @@ jobs:
           if [ "${{ github.ref }}" == "refs/heads/release" ]; then
             TAG_VERSION=$TAG_VERSION.$GITHUB_RUN_NUMBER
           fi
-          echo $TAG_VERSION
-          echo '::set-output name=IMAGE_TAG::$IMAGE_NAME:$TAG_VERSION'
-          echo '::set-output name=IMAGE_VERSION::$TAG_VERSION'
+          echo '::set-output name=IMAGE_TAG::$(echo $IMAGE_NAME:$TAG_VERSION)'
+          echo '::set-output name=IMAGE_VERSION::$(echo $TAG_VERSION)'
       - name: Docker Build
         run: |
           echo "Tag: $VERSION"
