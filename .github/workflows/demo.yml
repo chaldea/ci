@@ -17,6 +17,7 @@ on:
       - "charts/demo/**"
 
 env:
+  APP_NAME: demo
   NAMESPACE: chaldea-application
   IMAGE_NAME: chaldea/fate-ci-demo
   SOLUTION_PATH: ./modules/demo
@@ -41,17 +42,14 @@ jobs:
       - name: Get Version
         id: get-version
         run: |
-          echo $VERSION
           TAG=$(git describe --tags --abbrev=0 --match=v*[0-9.])
           if [ $? -eq 0 ]; then
             VERSION=${TAG:1}
           fi
-          echo $VERSION
           echo ::set-output name=VERSION::${VERSION}
           if [ "${{ github.ref }}" == "refs/heads/release" ]; then
             VERSION=$VERSION.$GITHUB_RUN_NUMBER
           fi
-          echo $VERSION
           echo ::set-output name=IMAGE_TAG::${IMAGE_NAME}:${VERSION}
           echo ::set-output name=IMAGE_VERSION::${VERSION}
       - name: Docker Build
@@ -71,7 +69,7 @@ jobs:
         uses: WyriHaximus/github-action-helm3@v2
         with:
           # exec: helm template --name-template=demo $CHART_PATH
-          exec: helm upgrade $CHART_PATH --install --wait --atomic --namespace=$NAMESPACE --values=$CHART_PATH/values.yaml
+          exec: helm upgrade $APP_NAME $CHART_PATH --install --wait --atomic --namespace=$NAMESPACE --values=$CHART_PATH/values.yaml
           kubeconfig: '${{ secrets.KUBECONFIG }}'
 
   package:
