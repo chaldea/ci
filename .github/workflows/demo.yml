@@ -7,19 +7,19 @@ on:
     tags:
       - "v*"
     paths:
-      - "modules/account/**"
-      - "charts/account/**"
+      - "modules/demo/**"
+      - "charts/demo/**"
   pull_request:
     branches:
       - main
     paths:
-      - "modules/account/**"
-      - "charts/account/**"
+      - "modules/demo/**"
+      - "charts/demo/**"
 
 env:
   IMAGE_NAME: chaldea/fate-ci-demo
-  SOLUTION_PATH: ./modules/account
-  CHART_PATH: ./charts/account
+  SOLUTION_PATH: ./modules/demo
+  CHART_PATH: ./charts/demo
   VERSION: 0.1.0
 
 jobs:
@@ -59,7 +59,6 @@ jobs:
       - name: Update Chart
         run: |
           sed -i 's/tag: ""/tag: "${{ steps.get-version.outputs.IMAGE_VERSION }}"/g' $CHART_PATH/values.yaml
-          cat $CHART_PATH/values.yaml
       - name: Kubernetes Deployment
         run: echo kubernetes
 
