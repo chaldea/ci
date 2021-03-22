@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Docker Build
+      - name: Docker Build Testing
         run: echo "Testing"
         # run: docker build -f $SOLUTION_PATH/Dockerfile -t $IMAGE_NAME $SOLUTION_PATH
 
@@ -46,15 +46,26 @@ jobs:
           fi
           if [ "${{ github.ref }}" == "refs/heads/release" ]
           then
-            echo '::set-output name=IMAGE_TAG::$IMAGE_NAME:$VERSION-$GITHUB_RUN_NUMBER'
+            IMAGE_VERSION='$VERSION.$GITHUB_RUN_NUMBER'
           else
-            echo '::set-output name=IMAGE_TAG::$IMAGE_NAME:$VERSION'
+            IMAGE_VERSION='$VERSION'
           fi
+          echo '::set-output name=IMAGE_TAG::$IMAGE_NAME:$IMAGE_VERSION'
+          echo '::set-output name=IMAGE_VERSION::$IMAGE_VERSION'
           echo '::set-output name=VERSION::$VERSION'
       - name: Docker Build
         run: |
-          echo "Tag: ${{ steps.get-version.outputs.VERSION }}"
           echo "Tag: ${{ steps.get-version.outputs.IMAGE_TAG }}"
+          echo "Tag: ${{ steps.get-version.outputs.IMAGE_VERSION }}"
+          echo "Tag: ${{ steps.get-version.outputs.VERSION }}"
+      - name: Docker Push
+        run: echo docker push
+      - name: Update Chart
+        run: |
+          sed -i 's/tag: ""/tag: "${{ steps.get-version.outputs.IMAGE_VERSION }}"/g' $CHART_PATH/values.yaml
+          cat $CHART_PATH/values.yaml
+      - name: Kubernetes Deployment
+        run: echo kubernetes
 
   package:
     if: ${{ github.event_name == 'push' && github.ref != 'refs/heads/release' }}
