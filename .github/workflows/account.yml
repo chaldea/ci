@@ -23,12 +23,12 @@ env:
   VERSION: 0.1.0
 
 jobs:
-  # testing:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v1
-  #     - name: Docker Build Testing
-  #       run: echo "Testing"
+  testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Docker Build Testing
+        run: echo "Testing"
         # run: docker build -f $SOLUTION_PATH/Dockerfile -t $IMAGE_NAME $SOLUTION_PATH
 
   deployment:
@@ -63,12 +63,12 @@ jobs:
       - name: Kubernetes Deployment
         run: echo kubernetes
 
-  # package:
-  #   if: ${{ github.event_name == 'push' && github.ref != 'refs/heads/release' }}
-  #   runs-on: ubuntu-latest
-  #   needs: [testing, deployment]
-  #   steps:
-  #     - uses: actions/checkout@v1
-  #     - name: Helm package
-  #       run: |  
-  #         echo Helm package
+  package:
+    if: ${{ github.event_name == 'push' && github.ref != 'refs/heads/release' }}
+    runs-on: ubuntu-latest
+    needs: [testing, deployment]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Helm package
+        run: |
+          echo Helm package
