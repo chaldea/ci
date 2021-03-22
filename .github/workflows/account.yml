@@ -42,16 +42,17 @@ jobs:
         run: |
           TAG=$(git describe --tags --abbrev=0 --match=v*[0-9.])
           if [ $? -eq 0 ]; then
-            VERSION=${TAG:1}
+            TAG_VERSION=${TAG:1}
           fi
           if [ "${{ github.ref }}" == "refs/heads/release" ]; then
-            VERSION=$VERSION.$GITHUB_RUN_NUMBER
+            TAG_VERSION=$TAG_VERSION.$GITHUB_RUN_NUMBER
           fi
-          echo $VERSION
-          echo '::set-output name=IMAGE_TAG::$IMAGE_NAME:$VERSION'
-          echo '::set-output name=IMAGE_VERSION::$VERSION'
+          echo $TAG_VERSION
+          echo '::set-output name=IMAGE_TAG::$IMAGE_NAME:$TAG_VERSION'
+          echo '::set-output name=IMAGE_VERSION::$TAG_VERSION'
       - name: Docker Build
         run: |
+          echo "Tag: $VERSION"
           echo "Tag: ${{ steps.get-version.outputs.IMAGE_TAG }}"
           echo "Tag: ${{ steps.get-version.outputs.IMAGE_VERSION }}"
       - name: Docker Push
