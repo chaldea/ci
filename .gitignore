@@ -1,0 +1,4 @@
+# DNX
+artifacts/
+dist/
+*.tgz
