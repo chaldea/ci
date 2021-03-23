@@ -77,8 +77,8 @@ jobs:
           exec: |
             helm template --name-template=$APP_NAME $CHART_PATH \
             --set image.tag=${{ steps.get-version.outputs.IMAGE_VERSION }} \
-            --set env.connectionStrings.default="${{ secrets.CONNECTION_STRING_DEFAULT }}" 
-            --set env.app.selfUrl="${{ secrets.APP_SELFURL }}" 
+            --set env.connectionStrings.default="${{ secrets.CONNECTION_STRING_DEFAULT }}" \
+            --set env.app.selfUrl="${{ secrets.APP_SELFURL }}" \
             --values=$CHART_PATH/values.yaml
           kubeconfig: '${{ secrets.KUBECONFIG }}'
 
