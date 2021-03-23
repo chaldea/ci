@@ -19,6 +19,8 @@ env:
     default: "User ID=root;Password=myPassword;Host=localhost;Port=5432;Database=Hello;"
   app:
     selfUrl: "https://localhost:44366"
+  authServer:
+    authority: "https://localhost:44366"
 
 serviceAccount:
   # Specifies whether a service account should be created

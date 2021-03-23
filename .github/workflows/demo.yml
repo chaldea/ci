@@ -74,6 +74,7 @@ jobs:
             --set image.tag=${{ steps.get-version.outputs.IMAGE_VERSION }} \
             --set env.connectionStrings.default="${{ secrets.CONNECTION_STRING_DEFAULT }}" \
             --set env.app.selfUrl="${{ secrets.APP_SELFURL }}" \
+            --set env.authServer.authority="${{ secrets.AUTHSERVER_AUTHORITY }}" \
             --values=$CHART_PATH/values.yaml
           kubeconfig: '${{ secrets.KUBECONFIG }}'
 

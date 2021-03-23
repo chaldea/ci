@@ -45,6 +45,8 @@ spec:
                   key: ConnectionStrings__Default
             - name: App__SelfUrl
               value: {{ .Values.env.app.selfUrl }}
+            - name: AuthServer__Authority
+              value: {{ .Values.env.authServer.authority }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
