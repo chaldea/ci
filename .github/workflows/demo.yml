@@ -96,8 +96,8 @@ jobs:
       #     -H "Content-Type: multipart/form-data" \
       #     -F "helm.asset=${ARTIFACT_NAME};type=application/x-compressed" \
       #     -u "${{ secrets.REPOSITORY_TOKEN }}"
-      # - name: Upload Artifacts
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: ${APP_NAME}-${{ needs.deployment.outputs.version }}.tgz
-      #     path: ${APP_NAME}-${{ needs.deployment.outputs.version }}.tgz
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${APP_NAME}-${{ needs.deployment.outputs.version }}.tgz
+          path: ./
