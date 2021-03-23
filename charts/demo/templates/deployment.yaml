@@ -43,6 +43,8 @@ spec:
                 secretKeyRef:
                   name:  {{ template "demo.fullname" . }}
                   key: ConnectionStrings__Default
+            - name: App__SelfUrl
+              value: {{ .Values.env.app.selfUrl }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
