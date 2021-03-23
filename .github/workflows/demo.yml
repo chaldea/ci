@@ -30,8 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Docker Build Testing
-        run: echo "Testing"
-        # run: docker build -f $SOLUTION_PATH/Dockerfile -t $IMAGE_NAME $SOLUTION_PATH
+        run: docker build -f $SOLUTION_PATH/Dockerfile -t $IMAGE_NAME $SOLUTION_PATH
 
   deployment:
     if: ${{ github.event_name == 'push' }}
@@ -54,23 +53,22 @@ jobs:
           fi
           echo ::set-output name=IMAGE_TAG::${IMAGE_NAME}:${VERSION}
           echo ::set-output name=IMAGE_VERSION::${VERSION}
-      # - name: Docker Build
-      #   run: |
-      #     echo "ImageTag: ${{ steps.get-version.outputs.IMAGE_TAG }}"
-      #     docker build -f $SOLUTION_PATH/Dockerfile -t ${{ steps.get-version.outputs.IMAGE_TAG }} $SOLUTION_PATH
-      # - name: Docker Push
-      #   run: |
-      #     echo "${{ secrets.ACCESS_TOKEN }}" | docker login -u yoli799480165 --password-stdin
-      #     docker push ${{ steps.get-version.outputs.IMAGE_TAG }}
-      # - name: Update Chart
-      #   run: |
-      #     sed -i 's/0.1.0/${{ steps.get-version.outputs.IMAGE_VERSION }}/g' $CHART_PATH/Chart.yaml
-      # - name: Kubernetes Deployment
-      #   uses: WyriHaximus/github-action-helm3@v2
-      #   with:
-      #     # exec: helm template --name-template=demo $CHART_PATH
-      #     exec: helm upgrade $APP_NAME $CHART_PATH --install --wait --atomic --namespace=$NAMESPACE --set image.tag=${{ steps.get-version.outputs.IMAGE_VERSION }},env.connectionStrings.default="${{ secrets.CONNECTION_STRING_DEMO }}" --values=$CHART_PATH/values.yaml
-      #     kubeconfig: '${{ secrets.KUBECONFIG }}'
+      - name: Docker Build
+        run: |
+          echo "ImageTag: ${{ steps.get-version.outputs.IMAGE_TAG }}"
+          docker build -f $SOLUTION_PATH/Dockerfile -t ${{ steps.get-version.outputs.IMAGE_TAG }} $SOLUTION_PATH
+      - name: Docker Push
+        run: |
+          echo "${{ secrets.ACCESS_TOKEN }}" | docker login -u yoli799480165 --password-stdin
+          docker push ${{ steps.get-version.outputs.IMAGE_TAG }}
+      - name: Update Chart
+        run: |
+          sed -i 's/0.1.0/${{ steps.get-version.outputs.IMAGE_VERSION }}/g' $CHART_PATH/Chart.yaml
+      - name: Kubernetes Deployment
+        uses: WyriHaximus/github-action-helm3@v2
+        with:
+          exec: helm upgrade $APP_NAME $CHART_PATH --install --wait --atomic --namespace=$NAMESPACE --set image.tag=${{ steps.get-version.outputs.IMAGE_VERSION }},env.connectionStrings.default="${{ secrets.CONNECTION_STRING_DEMO }}" --values=$CHART_PATH/values.yaml
+          kubeconfig: '${{ secrets.KUBECONFIG }}'
 
   package:
     if: ${{ github.event_name == 'push' && github.ref != 'refs/heads/release' }}
