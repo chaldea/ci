@@ -85,19 +85,17 @@ jobs:
         uses: WyriHaximus/github-action-helm3@v2
         with:
           exec: helm package $CHART_PATH --app-version=${{ needs.deployment.outputs.version }} --version=${{ needs.deployment.outputs.version }}
-      - name: List Dir
-        run: ls ./
-      # - name: Upload Artifacts
-      #   run: |
-      #     ARTIFACT_NAME=${APP_NAME}-${{ needs.deployment.outputs.version }}.tgz
-      #     echo "Artifact Name: ${ARTIFACT_NAME}"
-      #     curl -X POST "${{ secrets.REPOSITORY_URL }}" \
-      #     -H "accept: application/json" \
-      #     -H "Content-Type: multipart/form-data" \
-      #     -F "helm.asset=${ARTIFACT_NAME};type=application/x-compressed" \
-      #     -u "${{ secrets.REPOSITORY_TOKEN }}"
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ env.APP_NAME }}-${{ needs.deployment.outputs.version }}
-          path: ${{ env.APP_NAME }}-${{ needs.deployment.outputs.version }}.tgz
+        run: |
+          ARTIFACT_NAME=${{ env.APP_NAME }}-${{ needs.deployment.outputs.version }}.tgz
+          echo "Artifact Name: ${ARTIFACT_NAME}"
+          curl -X POST "${{ secrets.REPOSITORY_URL }}" \
+          -H "accept: application/json" \
+          -H "Content-Type: multipart/form-data" \
+          -F "helm.asset=${ARTIFACT_NAME};type=application/x-compressed" \
+          -u "${{ secrets.REPOSITORY_TOKEN }}"
+      # - name: Upload Artifacts
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: ${{ env.APP_NAME }}-${{ needs.deployment.outputs.version }}
+      #     path: ${{ env.APP_NAME }}-${{ needs.deployment.outputs.version }}.tgz
